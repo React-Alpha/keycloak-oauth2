@@ -1,15 +1,22 @@
 import { useState } from "react";
 import getKeycloakToken from "./component/service/keycloakService";
+import callSecureEndpoint from "./component/service/authorizationService";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [tokens, setTokens] = useState(null);
+  const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
       const result = await getKeycloakToken(username, password);
+      const accessToken = result.access_token;
+
+      const response = await callSecureEndpoint(accessToken);
+      
+      setSuccess(response);
       setTokens(result); // Save the tokens
       setError("");
     } catch (err) {
@@ -44,6 +51,8 @@ const App = () => {
           <p>{tokens.access_token}</p>
           <h3>ID Token:</h3>
           <p>{tokens.id_token}</p>
+          <h3>MESSAGE:</h3>
+          <p>{success ? success : ""}</p>
         </div>
       )}
     </div>
