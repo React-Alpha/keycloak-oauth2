@@ -11,10 +11,13 @@ const callSecureEndpoint = async (accessToken) => {
         Authorization: `Bearer ${accessToken}`, // Attach the access token
       },
     });
-    console.log("Response:", response);
-    return response;
+    console.log("Response:", response.data);
+    return response.data;
   } catch (error) {
-    console.error("Error accessing secure endpoint:", error.response?.data || error.message);
+    console.error(
+      "Error accessing secure endpoint:",
+      error.response?.data || error.message
+    );
   }
 };
 
